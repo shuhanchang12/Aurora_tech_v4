@@ -269,7 +269,7 @@ export const DeliverableViewer = ({
         <div className="w-64 bg-[#161b22] border-r border-slate-700 flex flex-col">
           <div className="px-4 py-3 border-b border-slate-700 flex items-center space-x-2 text-slate-300">
              <Layout className="w-4 h-4" />
-             <span className="text-sm font-semibold truncate">auroratech-repo</span>
+             <span className="text-sm font-semibold truncate">Aurora_tech_v4</span>
           </div>
           <div className="flex-1 overflow-y-auto py-2">
             {files.map((file, idx) => (

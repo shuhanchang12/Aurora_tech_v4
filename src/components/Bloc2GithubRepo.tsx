@@ -8,10 +8,25 @@ export default function Bloc2GithubRepo() {
         { name: 'terraform', type: 'folder', children: ['main.tf', 'variables.tf'] },
         { name: 'docker', type: 'folder', children: ['docker-compose.yml', 'init.sql'] },
         { name: 'scripts', type: 'folder', children: ['deploy.sh'] },
+        { name: 'Demo_Video.txt', type: 'file' },
+        { name: 'Infrastructure_Plan.html', type: 'file' },
+        { name: 'Infrastructure_Plan.pptx', type: 'file' },
         { name: 'README.md', type: 'file' },
     ];
 
     const fileContent: Record<string, {lang: string, code: string}> = {
+        'Demo_Video.txt': {
+            lang: 'plaintext',
+            code: 'https://loom.com/share/...'
+        },
+        'Infrastructure_Plan.html': {
+            lang: 'html',
+            code: '<!-- HTML Presentation View -->'
+        },
+        'Infrastructure_Plan.pptx': {
+            lang: 'plaintext',
+            code: '[Binary Data - PowerPoint Presentation]'
+        },
         'docker-compose.yml': {
             lang: 'yaml',
             code: `version: '3.8'

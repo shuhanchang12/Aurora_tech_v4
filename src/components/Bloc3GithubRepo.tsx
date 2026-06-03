@@ -9,10 +9,25 @@ export default function Bloc3GithubRepo() {
         { name: 'sql', type: 'folder', children: ['create_tables.sql'] },
         { name: 'python', type: 'folder', children: ['api_client.py'] },
         { name: 'tests', type: 'folder', children: ['test_pipeline.py'] },
+        { name: 'Demo_Video.txt', type: 'file' },
+        { name: 'Pipeline_Plan.html', type: 'file' },
+        { name: 'Pipeline_Plan.pptx', type: 'file' },
         { name: 'README.md', type: 'file' },
     ];
 
     const fileContent: Record<string, {lang: string, code: string}> = {
+        'Demo_Video.txt': {
+            lang: 'plaintext',
+            code: 'https://loom.com/share/...'
+        },
+        'Pipeline_Plan.html': {
+            lang: 'html',
+            code: '<!-- HTML Presentation View -->'
+        },
+        'Pipeline_Plan.pptx': {
+            lang: 'plaintext',
+            code: '[Binary Data - PowerPoint Presentation]'
+        },
         'auroratech_pipeline.py': {
             lang: 'python',
             code: `from datetime import datetime, timedelta

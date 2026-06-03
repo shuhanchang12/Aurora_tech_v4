@@ -73,8 +73,8 @@ To boot up the core pipeline and interface locally:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/auroratech-repo.git
-cd auroratech-repo
+git clone https://github.com/shuhanchang12/Aurora_tech_v4.git
+cd Aurora_tech_v4
 
 # 2. Boot up the infrastructure (PostgreSQL, FastAPI, Dashboard)
 cd bloc2_architecture

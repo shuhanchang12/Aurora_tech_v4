@@ -25,7 +25,7 @@ async function generateAll() {
         { text: "Data Science Role: Read-only access to anonymized Data Warehouse facts.", options: { bullet: true } },
         { text: "Executive Role: Access restricted to aggregated Dashboard Metrics.", options: { bullet: true } }
     ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: "334155" });
-    await p1.writeFile({ fileName: "./auroratech-repo/bloc1_governance/Executive_Presentation.pptx" });
+    await p1.writeFile({ fileName: "./bloc1_governance/Executive_Presentation.pptx" });
 
     // --- Bloc 2 ---
     const p2 = new PptxGenJS();
@@ -49,7 +49,7 @@ async function generateAll() {
         { text: "Dimensions: dim_date, dim_chromebook_vendor.", options: { bullet: true } },
         { text: "Optimized for fast aggregation queries required by the AI solution.", options: { bullet: true } }
     ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: "334155" });
-    await p2.writeFile({ fileName: "./auroratech-repo/bloc2_architecture/Infrastructure_Plan.pptx" });
+    await p2.writeFile({ fileName: "./bloc2_architecture/Infrastructure_Plan.pptx" });
 
     // --- Bloc 3 ---
     const p3 = new PptxGenJS();
@@ -72,7 +72,7 @@ async function generateAll() {
         { text: "Ocean-to-Air Logic: Re-route to Air Freight if sea delay >= 12.", options: { bullet: true } },
         { text: "Error Handling: 7-day moving average fallback on API failure.", options: { bullet: true } }
     ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: "334155" });
-    await p3.writeFile({ fileName: "./auroratech-repo/bloc3_pipelines/Pipeline_Plan.pptx" });
+    await p3.writeFile({ fileName: "./bloc3_pipelines/Pipeline_Plan.pptx" });
 
     // --- Bloc 4 ---
     const p4 = new PptxGenJS();
@@ -95,7 +95,7 @@ async function generateAll() {
         { text: "Strict Docker containerization (Python 3.10 Slim).", options: { bullet: true } },
         { text: "GitHub Actions CI pipeline for continuous testing.", options: { bullet: true } }
     ], { x: 0.5, y: 2, w: 9, h: 3, fontSize: 20, color: "334155" });
-    await p4.writeFile({ fileName: "./auroratech-repo/bloc4_ai_solutions/AI_Solution_Presentation.pptx" });
+    await p4.writeFile({ fileName: "./bloc4_ai_solutions/AI_Solution_Presentation.pptx" });
     
     console.log("All presentations generated successfully.");
 }

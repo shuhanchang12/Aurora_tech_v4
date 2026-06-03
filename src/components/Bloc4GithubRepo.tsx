@@ -14,12 +14,27 @@ export default function Bloc4GithubRepo() {
         { name: 'k8s', type: 'folder', children: ['deployment.yaml'] },
         { name: 'monitoring', type: 'folder', children: ['drift_config.yaml'] },
         { name: 'retrain', type: 'folder', children: ['run_retrain.py'] },
+        { name: 'Demo_Video.txt', type: 'file' },
+        { name: 'AI_Solution_Presentation.html', type: 'file' },
+        { name: 'AI_Solution_Presentation.pptx', type: 'file' },
         { name: 'Dockerfile', type: 'file' },
         { name: 'README.md', type: 'file' },
         { name: 'requirements.txt', type: 'file' },
     ];
 
     const fileContent: Record<string, {lang: string, code: string}> = {
+        'Demo_Video.txt': {
+            lang: 'plaintext',
+            code: 'https://loom.com/share/...'
+        },
+        'AI_Solution_Presentation.html': {
+            lang: 'html',
+            code: '<!-- HTML Presentation View -->'
+        },
+        'AI_Solution_Presentation.pptx': {
+            lang: 'plaintext',
+            code: '[Binary Data - PowerPoint Presentation]'
+        },
         'train_model.py': {
             lang: 'python',
             code: `import joblib

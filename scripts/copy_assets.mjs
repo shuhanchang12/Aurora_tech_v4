@@ -1,8 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 
-const srcDir = path.resolve(process.cwd(), 'auroratech-repo');
-const destDir = path.resolve(process.cwd(), 'public/auroratech-repo');
+const dirsToCopy = [
+  'bloc1_governance',
+  'bloc2_architecture',
+  'bloc3_pipelines',
+  'bloc4_ai_solutions'
+];
+const srcRoot = process.cwd();
+const destRoot = path.resolve(process.cwd(), 'public');
 
 function copyDirRecursiveSync(src, dest) {
   if (!fs.existsSync(dest)) {
@@ -23,5 +29,11 @@ function copyDirRecursiveSync(src, dest) {
   }
 }
 
-copyDirRecursiveSync(srcDir, destDir);
-console.log('Copied repo to public');
+for (let d of dirsToCopy) {
+  const s = path.join(srcRoot, d);
+  const dst = path.join(destRoot, d);
+  if (fs.existsSync(s)) {
+    copyDirRecursiveSync(s, dst);
+  }
+}
+console.log('Copied repo folders to public');
