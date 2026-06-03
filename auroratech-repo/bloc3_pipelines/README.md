@@ -3,10 +3,11 @@
 ## Overview
 This repository contains the ETL (Extract, Transform, Load) pipeline deliverables orchestrated by Apache Airflow. The pipeline bridges our external data sources (FX APIs and Logistics Telemetry) with our Dockerized Data Architecture from Bloc 2.
 
-## Deliverables
-1. **`Pipeline_Plan.html`**: The interactive presentation defining the ETL architecture, extraction strategies, transformation logic, and observability.
-2. **`dags/auroratech_pipeline.py`**: The fully self-contained Python source code defining the Airflow DAG, tasks, and PythonOperator functions.
-3. **`Demo_Video.txt`**: Contains the URL to the Loom screencast verifying the Airflow web UI and a successful execution run.
+## Directory Structure
+- `/dags`: Contains the main Airflow DAG definitions (`auroratech_pipeline.py`).
+- `/sql`: DDL statements for the destination PostgreSQL tables.
+- `/python`: Modularized Python code (e.g., API clients) for clean Airflow tasks.
+- `/tests`: Unit tests for data quality and functional components.
 
 ## Pipeline DAG Architecture Diagram
 
@@ -22,6 +23,16 @@ graph TD
     A -.->|HTTP 500 Failure| H[Fallback: 7-Day Moving Avg]
     H --> C
 ```
+
+## How to Run & Deploy
+1. **Airflow Deployment**: Place `dags/auroratech_pipeline.py` into your Airflow `$AIRFLOW_HOME/dags` folder.
+2. **Dependencies**: Ensure the python modules are in your PYTHONPATH:
+   ```bash
+   pip install -r requirements.txt
+   export PYTHONPATH=$PYTHONPATH:/python
+   ```
+3. **Database Initialization**: Apply the SQL scripts in `/sql` to your Postgres DB.
+4. **Trigger DAG**: Launch the execution via the Airflow UI on port 8080 manually or wait for the daily schedule.
 
 ## Evaluation Criteria Met & Addressed
 - **Automated Orchestration**: Utilizes Apache Airflow to schedule and manage dependencies safely (Extraction -> Transformation -> Load).

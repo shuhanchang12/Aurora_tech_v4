@@ -3,24 +3,44 @@
 ## Overview
 This repository finalizes the Aurora Tech project by implementing an end-to-end Machine Learning pipeline and serving infrastructure. It leverages the data acquired in Bloc 2 & 3 to predict margin risk using a Random Forest Classifier and visualizes this risk via an interactive dashboard.
 
-## Deliverables
-1. **`AI_Solution_Presentation.html`**: A 15-slide presentation covering the problem statement, algorithm selection, deployment architecture, and CI/CD operations.
-2. **`src/train_model.py` & `src/app.py`**: The model training scripts and the production-ready FastAPI serving endpoint.
-3. **`Dockerfile` & `requirements.txt`**: Everything needed to containerize the ML prediction API.
-4. **`.github/workflows/mlops-ci.yml`**: A Continuous Integration (CI) pipeline demonstrating automated testing.
-5. **`Demo_Video.txt`**: Contains the Loom video link demonstrating the live AI Dashboard and API usage.
+## Directory Structure
+- `.github/workflows/`: CI/CD pipelines (GitHub Actions) for automatic testing.
+- `notebooks/`: Jupyter notebooks for data exploration and feature engineering.
+- `src/`: Contains the predictive model training scripts and preprocessing.
+- `tests/`: CI/CD quality gate and unit tests.
+- `models/`: Serialized persistent model artifacts (.pkl).
+- `api/`: FastAPI application to serve predictions via REST endpoints.
+- `k8s/`: Kubernetes deployment manifests.
+- `monitoring/`: **[CRITICAL]** Data drift threshold and alerting configuration (Evidently/Aporia).
+- `retrain/`: **[CRITICAL]** Automated retraining scripts triggered by drift.
+- `Dockerfile`: Deployment container specification.
+- `requirements.txt`: Python package dependencies.
 
 ## MLOps Pipeline Diagram
 
 ```mermaid
 graph TD
-    A[(Data Warehouse)] -->|Fetch Vector| B[Trainer: train_model.py]
+    A[(Data Warehouse)] -->|Fetch Vector| B[Trainer /retrain]
     B -->|Train Random Forest| C(Model Artifact: .pkl)
-    C --> D[FastAPI: app.py]
+    C --> D[FastAPI: /api]
     D -->|Containerize| E[Docker Image]
     E -->|REST API JSON | F[React Web Dashboard]
     G[GitHub Actions] -.->|Automated PyTest Suite| E
+    H[Monitoring] -.->|Drift Detected| B
 ```
+
+## How to Run & Deploy
+1. **Model Validation**: Open notebooks in `/notebooks` to view data exploration. Run `pytest` inside `/tests` to validate logic.
+2. **Train Model**: Run `python src/train_model.py` to generate the `.pkl` artifact in `/models`.
+3. **Deploy API Locally**: 
+   ```bash
+   docker build -t auroratech-ml-api .
+   docker run -p 8000:8000 auroratech-ml-api
+   ```
+4. **Kubernetes Deploy**: Apply manifests via `kubectl apply -f k8s/deployment.yaml`.
+5. **Continuous Monitoring & Retraining**: 
+   - Evidently/Aporia tracks drift via configs in `/monitoring`.
+   - When drift exceeds threshold, the CI/CD pipeline triggers `/retrain/run_retrain.py` to auto-update the model.
 
 ## Evaluation Criteria Met & Addressed
 - **Machine Learning Viability**: Selects a Random Forest Classifier optimized for capturing non-linear relationships between volatile exchange rates and logistics delays.

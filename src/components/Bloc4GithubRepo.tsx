@@ -6,8 +6,17 @@ export default function Bloc4GithubRepo() {
 
     const files = [
         { name: '.github/workflows', type: 'folder', children: ['mlops-ci.yml'] },
+        { name: 'api', type: 'folder', children: ['main.py'] },
+        { name: 'k8s', type: 'folder', children: ['deployment.yaml'] },
+        { name: 'models', type: 'folder', children: ['model_v1.pkl'] },
+        { name: 'monitoring', type: 'folder', children: ['drift_config.yaml'] },
+        { name: 'notebooks', type: 'folder', children: ['exploration.ipynb'] },
+        { name: 'retrain', type: 'folder', children: ['run_retrain.py'] },
         { name: 'src', type: 'folder', children: ['train_model.py', 'app.py'] },
+        { name: 'tests', type: 'folder', children: ['test_model.py'] },
+        { name: 'Dockerfile', type: 'file' },
         { name: 'README.md', type: 'file' },
+        { name: 'requirements.txt', type: 'file' },
     ];
 
     const fileContent: Record<string, {lang: string, code: string}> = {
@@ -113,17 +122,149 @@ jobs:
       run: |
         pytest -v`
         },
+        'main.py': {
+            lang: 'python',
+            code: `from fastapi import FastAPI
+from src.app import app as api_app
+
+# Expose API for reverse proxy configurations
+app = api_app`
+        },
+        'deployment.yaml': {
+            lang: 'yaml',
+            code: `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: margin-risk-prediction
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: margin-risk-prediction
+  template:
+    metadata:
+      labels:
+        app: margin-risk-prediction
+    spec:
+      containers:
+      - name: margin-risk-api
+        image: auroratech/margin-prediction:latest
+        ports:
+        - containerPort: 8000`
+        },
+        'model_v1.pkl': {
+            lang: 'plaintext',
+            code: `[Binary Data - Joblib Model Artifact]`
+        },
+        'drift_config.yaml': {
+            lang: 'yaml',
+            code: `data_drift:
+  method: "evidently"
+  threshold: 0.15
+  features:
+    - "eur_to_usd"
+    - "freight_cost_eur"
+alerts:
+  slack_channel: "#mlops-alerts"`
+        },
+        'run_retrain.py': {
+            lang: 'python',
+            code: `import os
+from src.train_model import train_and_save_model
+
+def execute_retraining_pipeline():
+    print("Initiating automated model retraining...")
+    train_and_save_model()
+    print("Retraining successful. Syncing new artifact to registry.")
+
+if __name__ == "__main__":
+    execute_retraining_pipeline()`
+        },
+        'exploration.ipynb': {
+            lang: 'json',
+            code: `{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Aurora Tech Margin Risk Exploratory Data Analysis\n",
+        "Analyzing feature importance for predictive modeling."
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 4
+}`
+        },
+        'test_model.py': {
+            lang: 'python',
+            code: `import pytest
+import numpy as np
+
+def test_feature_matrix_shape():
+    # Test data shapes and constraints
+    X = np.array([[1.09, 35.2, 0, 5.0]])
+    assert X.shape == (1, 4)`
+        },
+        'Dockerfile': {
+            lang: 'dockerfile',
+            code: `FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]`
+        },
+        'requirements.txt': {
+            lang: 'text',
+            code: `fastapi==0.95.1
+uvicorn==0.22.0
+scikit-learn==1.2.2
+joblib==1.2.0
+pydantic==1.10.7
+pytest==7.3.1
+numpy==1.24.3`
+        },
         'README.md': {
             lang: 'markdown',
             code: `# Aurora Tech - AI Solutions (Bloc 4)
 
 This repository contains the Machine Learning and MLOps components for predictive margin risk analysis.
 
+## Architecture & How to run
+1. **Model Validation**: See \`notebooks/\` for data exploration. Model code is in \`src/\`.
+2. **Deploy Service**: Run \`docker build -t app .\` followed by \`docker run -p 8000:8000 app\`.
+3. **Continuous Monitoring**: We use Aporia/Evidently (see \`monitoring/\`) to track data drift on exchange rates.
+4. **Retraining**: When drift exceeds threshold, CI/CD calls \`retrain/run_retrain.py\`.
+
 ## Directory Structure
-- \`.github/workflows\`: CI/CD pipelines (GitHub Actions) for automatic testing.
+- \`.github/workflows/\`: CI/CD pipelines (GitHub Actions) for automatic testing.
+- \`api/\`: Entrypoints for integrating with external load balancers.
+- \`k8s/\`: Kubernetes deployment manifests.
+- \`models/\`: Serialized persistent model artifacts (.pkl).
+- \`monitoring/\`: **[NEW]** Data drift threshold and alerting configuration (Evidently/Aporia).
+- \`notebooks/\`: Jupyter notebooks for data exploration and feature engineering.
+- \`retrain/\`: **[NEW]** Scripts to automatically retrain the model when data drift is detected.
 - \`src/\`: Contains the predictive model and API service.
   - \`train_model.py\`: Script to train the Random Forest Classifier.
   - \`app.py\`: FastAPI application to serve predictions via REST endpoints.
+- \`tests/\`: CI/CD quality gate and unit tests.
+- \`Dockerfile\`: Deployment container specification.
+- \`requirements.txt\`: Python package dependencies.
 `
         }
     };

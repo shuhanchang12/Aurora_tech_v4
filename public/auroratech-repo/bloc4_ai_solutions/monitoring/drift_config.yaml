@@ -1,0 +1,12 @@
+# Monitors data drift for model inputs
+data_drift:
+  method: "evidently"
+  threshold: 0.15
+  features:
+    - "eur_to_usd"
+    - "freight_cost_eur"
+    - "component_delay_days"
+
+alerts:
+  slack_channel: "#mlops-alerts"
+  action: "trigger_retrain"

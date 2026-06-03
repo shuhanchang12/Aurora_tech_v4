@@ -3,11 +3,27 @@
 ## Overview
 This module contains the Infrastructure as Code (IaC) and Data Architecture design for Aurora Tech's enterprise data warehouse. The architecture provides a reproducible, secure, and performant storage layer capable of handling high-volume daily ingestions and serving complex analytical queries to our AI solutions.
 
-## Deliverables
-1. **`Infrastructure_Plan.html`**: The presentation slides for the 5-minute oral defense, outlining architectural choices, the Star Schema, and monitoring strategies.
-2. **`docker-compose.yml`**: The IaC configuration that orchestrates our PostgreSQL warehouse, PgAdmin interface, and Grafana monitoring stack.
-3. **`init.sql`**: The Data Definition Language (DDL) script that instantiates the Star Schema and pre-populates critical dimensional data upon container boot.
-4. **`Demo_Video.txt`**: Contains the URL to the Loom screencast demonstrating the live deployment and query validation.
+## Architecture Highlights
+- **Storage:** PostgreSQL 15 (Alpine) containerized for lightweight, reproducible deployment.
+- **Model:** Star Schema strictly enforcing isolated dimensions (Vendors, Dates) against a central Margin Risk Fact Table.
+- **Deploy:** Managed via Docker Compose and Terraform.
+
+## Directory Structure
+- `/docker`: Contains compose configurations (`docker-compose.yml`) and DDL initialization scripts (`init.sql`).
+- `/terraform`: AWS RDS infrastructure provisioning templates (`main.tf` etc).
+- `/scripts`: Utility scripts for CI/CD automation (`deploy.sh`).
+
+## How to Run & Deploy
+Run the following script to deploy locally using Docker:
+```bash
+bash ./scripts/deploy.sh
+```
+
+Or deploy directly via docker-compose:
+```bash
+cd docker
+docker-compose up -d
+```
 
 ## Star Schema Diagram
 
