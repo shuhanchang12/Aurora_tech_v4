@@ -5,8 +5,8 @@ export default function Bloc2GithubRepo() {
     const [selectedFile, setSelectedFile] = useState<string | null>('README.md');
 
     const files = [
-        { name: 'docker', type: 'folder', children: ['docker-compose.yml', 'init.sql'] },
         { name: 'terraform', type: 'folder', children: ['main.tf', 'variables.tf'] },
+        { name: 'docker', type: 'folder', children: ['docker-compose.yml', 'init.sql'] },
         { name: 'scripts', type: 'folder', children: ['deploy.sh'] },
         { name: 'README.md', type: 'file' },
     ];
