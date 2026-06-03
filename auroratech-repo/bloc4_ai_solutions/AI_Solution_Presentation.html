@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bloc 4: AI Solution Presentation</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+  .presentation-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
+  .slide-container { width: 900px; height: 500px; background: white; color: #334155; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); padding: 50px; position: relative; display: none; box-sizing: border-box; }
+  .slide-container.active { display: flex; flex-direction: column; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .header { color: #0f172a; border-bottom: 3px solid #10b981; padding-bottom: 15px; margin-bottom: 25px; }
+  h1 { margin: 0; font-size: 2.2rem; }
+  h2 { color: #047857; font-size: 1.5rem; margin-top: 0; }
+  ul { font-size: 1.2rem; line-height: 1.8; color: #475569; }
+  .controls { margin-top: 30px; display: flex; gap: 15px; z-index: 10; }
+  button { padding: 12px 24px; cursor: pointer; background: #10b981; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 1rem; }
+  button:hover { background: #047857; }
+  button:disabled { background: #94a3b8; cursor: not-allowed; }
+  .slide-number { position: absolute; bottom: 20px; right: 30px; font-weight: bold; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<div class="presentation-wrapper">
+  <div id="slides">
+    <div class="slide-container active">
+        <div class="header"><h1>Aurora Tech: AI Solutions</h1></div>
+        <h2>End-to-End MLOps Defense Presentation</h2>
+        <ul>
+            <li><strong>Objective:</strong> Industrialize an AI margin prediction application.</li>
+            <li><strong>Module:</strong> Bloc 4 - AI Solutions & Visualization</li>
+            <li><strong>Duration:</strong> 15 minutes Defense</li>
+        </ul>
+        <div class="slide-number">Slide 1 / 8</div>
+    </div>
+    
+    <div class="slide-container">
+        <div class="header"><h1>1. Problem Statement</h1></div>
+        <h2>Margin volatility</h2>
+        <ul>
+            <li>Supply chain issues and volatile EUR/USD exchange rates threaten our 8% profit margin.</li>
+            <li>Goal: Predict extreme cost compressions proactively.</li>
+            <li>Data Source: <code>fact_chromebook_margin_risk</code> from Bloc 2 Warehouse.</li>
+        </ul>
+        <div class="slide-number">Slide 2 / 8</div>
+    </div>
+
+    <div class="slide-container">
+        <div class="header"><h1>2. The Machine Learning Model</h1></div>
+        <h2>Random Forest Classifier</h2>
+        <ul>
+            <li>Chosen for excellence in handling non-linear relationships (FX vs Shipping modes).</li>
+            <li>Features: EUR/USD, EUR/TWD, Delay Days, Freight Cost.</li>
+            <li>Label: Margin Impact Detected (0/1).</li>
+        </ul>
+        <div class="slide-number">Slide 3 / 8</div>
+    </div>
+
+    <div class="slide-container">
+        <div class="header"><h1>3. Serving Infrastructure</h1></div>
+        <h2>FastAPI Endpoint Integration</h2>
+        <ul>
+            <li>Model serialized using <code>joblib</code> resulting in a self-contained artifact.</li>
+            <li>FastAPI serves the artifact on a <code>/predict-margin-risk</code> REST endpoint.</li>
+            <li>Pydantic schemas ensure valid payload inputs.</li>
+        </ul>
+        <div class="slide-number">Slide 4 / 8</div>
+    </div>
+
+    <div class="slide-container">
+        <div class="header"><h1>4. Architecture & Containerization</h1></div>
+        <h2>MLOps Deployment Flow</h2>
+        <div style="display:flex; justify-content:center; align-items:center; gap:15px; margin: 20px 0; font-size: 0.9rem;">
+            <div style="background:#f1f5f9; padding:10px; border-radius:6px; text-align:center; border:1px solid #cbd5e1; color: #334155;"><b>Scikit-Learn</b><br/><small>train_model.py</small></div>
+            <div style="color:#10b981;">&#10141; <small>.pkl</small> &#10141;</div>
+            <div style="background:#d1fae5; padding:10px; border-radius:6px; text-align:center; border:2px solid #10b981; color:#065f46;"><b>FastAPI Server</b><br/><small>Port 8000</small></div>
+            <div style="color:#10b981;">&#10141; <small>Wraps</small> &#10141;</div>
+            <div style="background:#0f172a; padding:10px; border-radius:6px; text-align:center; border:2px solid #3b82f6; color:white;"><b>Docker Container</b><br/><small>Python 3.10 Slim</small></div>
+        </div>
+        <ul style="font-size: 1.1rem;">
+            <li>Entire FastAPI application wrapped in a reproducible environment.</li>
+            <li>Eliminates "It works on my machine" ML dependency issues.</li>
+        </ul>
+        <div class="slide-number">Slide 5 / 8</div>
+    </div>
+
+    <div class="slide-container">
+        <div class="header"><h1>5. CI/CD Operations</h1></div>
+        <h2>Continuous Integration via GitHub Actions</h2>
+        <ul>
+            <li>Every commit merges triggers <code>mlops-ci.yml</code> workflow.</li>
+            <li>Automated PyTest gates ensure no broken models are pushed to production API.</li>
+        </ul>
+        <div class="slide-number">Slide 6 / 8</div>
+    </div>
+
+    <div class="slide-container">
+        <div class="header"><h1>6. Automated Retraining</h1></div>
+        <h2>Concept Drift Mitigation</h2>
+        <ul>
+            <li>System monitors macroeconomic drift on the EUR profile continuously.</li>
+            <li>If drift > 5% threshold detected, a Jenkins/Airflow trigger executes <code>train_model.py</code> on new warehouse data automatically.</li>
+        </ul>
+        <div class="slide-number">Slide 7 / 8</div>
+    </div>
+
+    <div class="slide-container">
+        <div class="header"><h1>Conclusion & Actionable Output</h1></div>
+        <h2>Tying back to business value</h2>
+        <ul>
+            <li>If risk probability > 85%, API yields an actionable Web3 alert for treasury managers.</li>
+            <li>Dashboard integrated to view these predictions live.</li>
+            <li><strong>Thank you. Ready for Q&A.</strong></li>
+        </ul>
+        <div class="slide-number">Slide 8 / 8</div>
+    </div>
+  </div>
+  
+  <div class="controls">
+    <button id="prevBtn" onclick="prevSlide()" disabled>Previous Slide</button>
+    <button id="nextBtn" onclick="nextSlide()">Next Slide</button>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide-container');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function showSlide(index) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[index].classList.add('active');
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === slides.length - 1;
+  }
+  function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; showSlide(currentSlide); } }
+  function prevSlide() { if (currentSlide > 0) { currentSlide--; showSlide(currentSlide); } }
+</script>
+</body>
+</html>

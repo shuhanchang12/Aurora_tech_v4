@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: aurora_postgres
+    environment:
+      POSTGRES_USER: auroratech
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: aurora_dw
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - data_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: aurora_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@auroratech.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - data_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: aurora_grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - data_network
+
+volumes:
+  postgres_data:
+
+networks:
+  data_network:
+    driver: bridge
