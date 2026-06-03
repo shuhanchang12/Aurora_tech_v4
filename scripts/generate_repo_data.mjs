@@ -21,22 +21,42 @@ function readDirRecursive(dir) {
 
 function processBloc(blocName) {
   const dir = path.join(REPO_DIR, blocName);
-  if (!fs.existsSync(dir)) return [];
+  const presDir = path.join(REPO_DIR, 'presentations', blocName.split('_')[0]); // e.g. bloc1
+  let resultObjects = [];
   
-  const files = readDirRecursive(dir);
-  return files.map(file => {
-    const relativePath = path.relative(dir, file);
-    let content = '';
-    // Skip binary files like .pptx
-    if (!file.endsWith('.pptx')) {
-      content = fs.readFileSync(file, 'utf-8');
-    }
-    return {
-      name: relativePath,
-      content,
-      isBinary: file.endsWith('.pptx')
-    };
-  });
+  if (fs.existsSync(dir)) {
+    const files = readDirRecursive(dir);
+    files.forEach(file => {
+      const relativePath = path.relative(dir, file);
+      let content = '';
+      if (!file.endsWith('.pptx') && !file.endsWith('.pkl')) {
+        content = fs.readFileSync(file, 'utf-8');
+      }
+      resultObjects.push({
+        name: relativePath,
+        content,
+        isBinary: file.endsWith('.pptx') || file.endsWith('.pkl')
+      });
+    });
+  }
+  
+  if (fs.existsSync(presDir)) {
+    const pFiles = readDirRecursive(presDir);
+    pFiles.forEach(file => {
+      const relativePath = path.basename(file); // For presentations, just use basename (e.g., Demo_Video.txt) so UI code matches it
+      let content = '';
+      if (!file.endsWith('.pptx')) {
+        content = fs.readFileSync(file, 'utf-8');
+      }
+      resultObjects.push({
+        name: relativePath,
+        content,
+        isBinary: file.endsWith('.pptx') || file.endsWith('.pkl')
+      });
+    });
+  }
+  
+  return resultObjects;
 }
 
 const data = {
